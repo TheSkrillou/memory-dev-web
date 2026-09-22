@@ -54,17 +54,19 @@ function initGame() {
     card.addEventListener("click", () => handleCardClick(card));
     });
     clearInterval(timerInterval);
-    startTimer();
+    
 }
 
-if (lockBoard || card.classList.contains("matched") || card === firstCard ||card.firstChild) {
-    return; // Si une des conditions est vraie, on ignore le clic et on s'arrête là
-}
 
 function handleCardClick(card) {
  if (lockBoard || card.classList.contains("matched") || card === firstCard || card.firstChild) {
     return;
     }
+
+    if (moves === 0 && !firstCard) {
+        startTimer();
+    }
+
     revealCard(card); // Tout est bon, on affiche l'image de la carte
     if (!firstCard) {
     firstCard = card; // C'est la première carte du tour
