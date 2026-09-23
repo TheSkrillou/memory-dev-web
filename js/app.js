@@ -3,7 +3,8 @@ const movesDisplay = document.getElementById("moves");
 const timerDisplay = document.getElementById("timer");
 const resultDisplay = document.getElementById("result");
 const restartBtn = document.getElementById("restart-btn");
-
+const startBtn = document.getElementById("start-btn");
+restartBtn.style.display = "none"; // On cache le bouton de redémarrage au début
 let dimension = 150;
 let imgStart = Math.floor(Math.random() * 100) + 1;
 let cards = [];
@@ -54,6 +55,8 @@ function initGame() {
     card.addEventListener("click", () => handleCardClick(card));
     });
     clearInterval(timerInterval);
+
+    startTimer(); // On démarre le chronomètre
     
 }
 
@@ -62,11 +65,7 @@ function handleCardClick(card) {
  if (lockBoard || card.classList.contains("matched") || card === firstCard || card.firstChild) {
     return;
     }
-
-    if (moves === 0 && !firstCard) {
-        startTimer();
-    }
-
+    
     revealCard(card); // Tout est bon, on affiche l'image de la carte
     if (!firstCard) {
     firstCard = card; // C'est la première carte du tour
@@ -119,6 +118,7 @@ ${formatTime(seconds)}`;
 }
 
 function startTimer() {
+    clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         seconds++;
         timerDisplay.textContent = `Temps : ${formatTime(seconds)}`;
@@ -135,6 +135,12 @@ function formatTime(sec) {
     return `${min}:${s}`;
 }
 
+startBtn.addEventListener("click", () => {
+    initGame();
+    startBtn.style.display = "none";
+    restartBtn.style.display = "inline-block";
+     // Désactive le bouton après le démarrage
+});
+
 // Liaisons finales
 restartBtn.addEventListener("click", initGame);
-initGame();
